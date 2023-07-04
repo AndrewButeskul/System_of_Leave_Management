@@ -17,7 +17,7 @@ namespace LeaveManagementWeb.Data.Migrations
                     NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
-                constraints: table =>
+                constraints: table => 
                 {
                     table.PrimaryKey("PK_AspNetRoles", x => x.Id);
                 });
