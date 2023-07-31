@@ -4,6 +4,7 @@ using LeaveManagementWeb.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LeaveManagementWeb.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230730092303_AddedUsersAndRolesByDefault")]
+    partial class AddedUsersAndRolesByDefault
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,9 +106,9 @@ namespace LeaveManagementWeb.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "usr2d930-5ab6-4c02-9eb1-febffde4814c",
+                            Id = "2272d930-5ab6-4c02-9eb1-febffde4814c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5b9d3599-0319-4a84-aa6c-b971539155bd",
+                            ConcurrencyStamp = "9223be51-2502-4472-bed3-bd5767b625af",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "buteskul5.6@gmail.com",
@@ -115,18 +117,18 @@ namespace LeaveManagementWeb.Data.Migrations
                             LastName = "System",
                             LockoutEnabled = false,
                             NormalizedEmail = "BUTESKUL5.6@GMAIL.COM",
-                            NormalizedUserName = "BUTESKUL5.6@GMAIL.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEJKO//z8uCUlFoAfJM1kCD1t5aSVW8sP5dqOsYB/vgZshKUNNiR77E6wtYdLSOYG8A==",
+                            NormalizedUserName = "SUPERVISOR",
+                            PasswordHash = "AQAAAAEAACcQAAAAELHKzWmNCQ8yJCHgmy0dt25mGHw3ne+jU7kpuQbERa0ud18cVpciJm3RBx3G55ZdjQ==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "06aa10e3-2167-4219-9d4c-a1f820097916",
+                            SecurityStamp = "38aeca11-2b3b-4c03-811e-1ad8a9144351",
                             TwoFactorEnabled = false,
-                            UserName = "buteskul5.6@gmail.com"
+                            UserName = "Supervisor"
                         },
                         new
                         {
-                            Id = "usl25bb0-95db-498e-8369-d10fcfae6e98",
+                            Id = "9a825bb0-95db-498e-8369-d10fcfae6e98",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6620286a-cd3c-489c-9294-b54e4289d86d",
+                            ConcurrencyStamp = "3e2383c1-7bb2-46a1-a85e-b1aa82013f73",
                             DateJoined = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             DateOfBirth = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             Email = "user@localhost.com",
@@ -135,12 +137,12 @@ namespace LeaveManagementWeb.Data.Migrations
                             LastName = "System",
                             LockoutEnabled = false,
                             NormalizedEmail = "USER@LOCALHOST.COM",
-                            NormalizedUserName = "USER@LOCALHOST.COM",
-                            PasswordHash = "AQAAAAEAACcQAAAAEIYOefkO+kpf6aj3/MvNu/Ak6+NsQE4xGoB1O7UVLpxac9nhn9dq+sC7CEt5PVSDHg==",
+                            NormalizedUserName = "ANONYMOUS",
+                            PasswordHash = "AQAAAAEAACcQAAAAEGvr08PUNSZsgPNjykY52DXdwyFBmFrd3t2e0gWAwW7teKPmrM7yvFhWT7rVqCDqiA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "ae39e12b-a5f3-4d13-980e-799a350657dd",
+                            SecurityStamp = "61ecf233-1d6d-4f93-b257-01e50fb02886",
                             TwoFactorEnabled = false,
-                            UserName = "user@localhost.com"
+                            UserName = "Anonymous"
                         });
                 });
 
@@ -230,14 +232,14 @@ namespace LeaveManagementWeb.Data.Migrations
                         new
                         {
                             Id = "2272d930-5ab6-4c02-9eb1-febffde4814c",
-                            ConcurrencyStamp = "ed4d7215-7c27-48c5-b781-34f17610b203",
+                            ConcurrencyStamp = "0d0ce428-d8b5-4fda-98a0-4b715ffbd68d",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = "9a825bb0-95db-498e-8369-d10fcfae6e98",
-                            ConcurrencyStamp = "e1dfde31-e9de-4f6e-8bb1-7c625440d580",
+                            ConcurrencyStamp = "1e514db6-7916-42dc-8dbd-a3a82a70916e",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -334,13 +336,8 @@ namespace LeaveManagementWeb.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "usr2d930-5ab6-4c02-9eb1-febffde4814c",
+                            UserId = "9a825bb0-95db-498e-8369-d10fcfae6e98",
                             RoleId = "2272d930-5ab6-4c02-9eb1-febffde4814c"
-                        },
-                        new
-                        {
-                            UserId = "usl25bb0-95db-498e-8369-d10fcfae6e98",
-                            RoleId = "9a825bb0-95db-498e-8369-d10fcfae6e98"
                         });
                 });
 
