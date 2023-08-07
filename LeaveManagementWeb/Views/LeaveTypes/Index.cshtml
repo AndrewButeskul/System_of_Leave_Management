@@ -31,11 +31,12 @@
                 @Html.DisplayFor(modelItem => item.DefaultDays)
             </td>
             <td>
+                <button data-id= "@item.Id" class="btn btn-primary allocate-btn" type="button">Allocate Leave</button> &nbsp;
                 <a class="btn btn-warning" asp-action="Edit" asp-route-id="@item.Id"><i class="fa-solid fa-pencil"></i></a> &nbsp;
                 <a class="btn btn-info" asp-action="Details" asp-route-id="@item.Id"><i class="fa-solid fa-file-lines"></i></a> &nbsp;
                 <button data-id= "@item.Id" class="btn btn-danger delete-btn" type="button"><i class="fa-regular fa-trash-can"></i></button>
             </td>
-        </tr>
+        </tr> 
 }
     </tbody>
 </table>
@@ -44,11 +45,13 @@
         <input type="hidden" id="leaveTypeId" name="id" />
  </form>
 
+  <form id="allocationForm" asp-action="AllocateLeave">
+        <input type="hidden" id="leaveTypeIdAllocation" name="id" />
+ </form>
+
 @section Scripts{
     <script>
-        $(function(){
-            new DataTable('.table');
-
+        $(function(){            
             $('.delete-btn').click(function(e) {
                 swal({
                     title: "Confirm action",
@@ -62,6 +65,23 @@
                         var id = btn.data("id")
                         $('#leaveTypeId').val(id)
                         $('#deleteForm').submit()
+                    }
+                })
+            })
+
+            $('.allocate-btn').click(function(e) {
+                swal({
+                    title: "Confirm action",
+                    text: "Do you want to allocate Leave for all employees?",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                }).then((confirm) => {
+                    if(confirm){
+                        var btn = $(this)
+                        var id = btn.data("id")
+                        $('#leaveTypeIdAllocation').val(id)
+                        $('#allocationForm').submit()
                     }
                 })
             })
