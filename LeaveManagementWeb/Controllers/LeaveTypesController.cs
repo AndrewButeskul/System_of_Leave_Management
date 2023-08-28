@@ -21,8 +21,9 @@ namespace LeaveManagementWeb.Controllers
         private readonly ILeaveTypeRepository _leaveTypeRepository;
         private readonly IMapper _mapper;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
-        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, IMapper mapper,
-            ILeaveAllocationRepository leaveAllocationRepository)
+        public LeaveTypesController(ILeaveTypeRepository leaveTypeRepository, 
+                                    IMapper mapper,
+                                    ILeaveAllocationRepository leaveAllocationRepository)
         {
             _leaveTypeRepository = leaveTypeRepository; 
             _mapper = mapper;
@@ -122,24 +123,7 @@ namespace LeaveManagementWeb.Controllers
             return View(leaveTypeVM);
         }
 
-       /* // GET: LeaveTypes/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.LeaveTypes == null)
-            {
-                return NotFound();
-            }
-
-            var leaveType = await _context.LeaveTypes.FirstOrDefaultAsync(m => m.Id == id);
-            if (leaveType == null)
-            {
-                return NotFound();
-            }
-
-            //var leaveTypeVM = _mapper.Map<>
-            return View(leaveType);
-        }*/
-
+       
         // POST: LeaveTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]

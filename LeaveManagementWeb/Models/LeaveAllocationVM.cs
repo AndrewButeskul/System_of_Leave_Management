@@ -6,6 +6,7 @@ namespace LeaveManagementWeb.Models
     {
         [Required]  
         public int Id { get; set; }
+
         [Display(Name = "Number of days")]
         [Required]
         [Range(1,30, ErrorMessage ="Invalid entered value")]

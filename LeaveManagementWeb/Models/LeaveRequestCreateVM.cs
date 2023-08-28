@@ -15,7 +15,6 @@ namespace LeaveManagementWeb.Models
         [Display(Name = "Date of Expiry")]
         public DateTime? DateOfExpiry { get; set; }
 
-        [Display(Name = "Leave Type ID")]
         [Required]
         public int LeaveTypeId { get; set; }
         public SelectList? LeaveTypes { get; set; }
