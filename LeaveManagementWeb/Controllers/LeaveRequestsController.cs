@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LeaveManagementWeb.Constant;
+using LeaveManagementWeb.Contracts;
+using LeaveManagementWeb.Data;
+using LeaveManagementWeb.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using LeaveManagementWeb.Data;
-using LeaveManagementWeb.Models;
-using AutoMapper;
-using LeaveManagementWeb.Contracts;
-using Microsoft.AspNetCore.Authorization;
-using LeaveManagementWeb.Constant;
 
 namespace LeaveManagementWeb.Controllers
 {
@@ -19,12 +14,15 @@ namespace LeaveManagementWeb.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ILeaveRequestRepository _leaveRequestRepository;
+        private readonly ILogger<LeaveRequestsController> _logger;
 
-        public LeaveRequestsController(ApplicationDbContext context, 
-            ILeaveRequestRepository leaveRequestRepository)
+        public LeaveRequestsController(ApplicationDbContext context,
+            ILeaveRequestRepository leaveRequestRepository,
+            ILogger<LeaveRequestsController> logger)
         {
             _context = context;
             _leaveRequestRepository = leaveRequestRepository;
+            _logger = logger;
         }
 
         [Authorize(Roles = Roles.Administrator)]
@@ -55,8 +53,9 @@ namespace LeaveManagementWeb.Controllers
             {
                 await _leaveRequestRepository.ChangeApprovalStatus(id, approved);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
+                _logger.LogError(ex,"Error with Approving the Leave Request");
                 throw;
             }
             return RedirectToAction(nameof(Index));
@@ -72,7 +71,8 @@ namespace LeaveManagementWeb.Controllers
             }
             catch (Exception ex)
             {
-                throw; 
+                _logger.LogError(ex, "Error with Canceling the Leave Request");
+                throw;
             }
             return RedirectToAction(nameof(MyLeave));
         }
@@ -105,7 +105,7 @@ namespace LeaveManagementWeb.Controllers
                 if (ModelState.IsValid)
                 {
                     var isValidRequest = await _leaveRequestRepository.CreateLeaveRequest(model);
-                    if(isValidRequest)
+                    if (isValidRequest)
                         return RedirectToAction(nameof(MyLeave));
 
                     ModelState.AddModelError(string.Empty, "Please, try again later. You have exceeded your allocation)");
@@ -113,6 +113,7 @@ namespace LeaveManagementWeb.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "Error with Creating the Leave Request");
                 ModelState.AddModelError(string.Empty, "The unknown error! Please, try again)");
             }
             model.LeaveTypes = new SelectList(_context.LeaveTypes, "Id", "Name", model.LeaveTypeId);
@@ -205,14 +206,14 @@ namespace LeaveManagementWeb.Controllers
             {
                 _context.LeaveRequests.Remove(leaveRequest);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool LeaveRequestExists(int id)
         {
-          return (_context.LeaveRequests?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.LeaveRequests?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

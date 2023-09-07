@@ -9,13 +9,18 @@ namespace LeaveManagementWeb.Models
     {
         [Required]
         [Display(Name ="Date of Start")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime? StartDate { get; set; }
 
         [Required]
         [Display(Name = "Date of Expiry")]
+        [DisplayFormat(DataFormatString = "{0:dd-MM-yyyy}")]
+        [DataType(DataType.Date)]
         public DateTime? DateOfExpiry { get; set; }
 
         [Required]
+        [Display(Name ="Leave Type")]
         public int LeaveTypeId { get; set; }
         public SelectList? LeaveTypes { get; set; }
 

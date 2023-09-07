@@ -3,8 +3,6 @@ using LeaveManagementWeb.Constant;
 using LeaveManagementWeb.Contracts;
 using LeaveManagementWeb.Data;
 using LeaveManagementWeb.Models;
-using LeaveManagementWeb.Repositories;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -41,7 +39,7 @@ namespace LeaveManagementWeb.Controllers
             return View(model);
         }
 
-        
+
         // GET: EmployeesController/EditAllocation/5
         public async Task<ActionResult> EditAllocation(int id)
         {

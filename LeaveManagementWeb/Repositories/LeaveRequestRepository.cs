@@ -4,6 +4,7 @@ using LeaveManagementWeb.Data;
 using LeaveManagementWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeaveManagementWeb.Repositories
@@ -15,17 +16,20 @@ namespace LeaveManagementWeb.Repositories
         private readonly UserManager<Employee> _userManager;
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly ILeaveAllocationRepository _leaveAllocationRepository;
+        private readonly IEmailSender _emailSender;
 
         public LeaveRequestRepository(ApplicationDbContext contex, IMapper mapper,
             UserManager<Employee> userManager, 
             IHttpContextAccessor httpContextAccessor,
-            ILeaveAllocationRepository leaveAllocationRepository) : base(contex)
+            ILeaveAllocationRepository leaveAllocationRepository,
+            IEmailSender emailSender) : base(contex)
         {
             _contex = contex;
             _mapper = mapper;
             _userManager = userManager;
             _httpContextAccessor = httpContextAccessor;
             _leaveAllocationRepository = leaveAllocationRepository;
+            _emailSender = emailSender;
         }
 
         public async Task CancelLeaveRequest(int leaveRequestId)
@@ -33,6 +37,11 @@ namespace LeaveManagementWeb.Repositories
             var leaveRequest = await GetAsync(leaveRequestId);
             leaveRequest.Cancelled = true;
             await UpdateAsync(leaveRequest);
+
+            var user = await _userManager.GetUserAsync(_httpContextAccessor?.HttpContext?.User);
+
+            await _emailSender.SendEmailAsync(user.Email, $"Your Leave Request Cancelled", $"Your leave request " +
+                $"{leaveRequest.LeaveType.Name} from {leaveRequest.StartDate} to {leaveRequest.DateOfExpiry} has been cancelled successfuly.");
         }
 
         public async Task ChangeApprovalStatus(int leaveRequestId, bool approved)
@@ -51,6 +60,12 @@ namespace LeaveManagementWeb.Repositories
                 await _leaveAllocationRepository.UpdateAsync(allocation);
             }
             await UpdateAsync(leaveRequest);
+
+            var user = await _userManager.GetUserAsync(_httpContextAccessor?.HttpContext?.User);
+            var approvalStatus = approved ? "Approved" : "Declined";
+
+            await _emailSender.SendEmailAsync(user.Email, $"Your Leave Request {approvalStatus} successfully", $"Your leave request " +
+                $"{leaveRequest.LeaveType.Name} from {leaveRequest.StartDate} to {leaveRequest.DateOfExpiry} has checked and it {approvalStatus}.");
         }
 
         public async Task<bool> CreateLeaveRequest(LeaveRequestCreateVM model)
@@ -65,14 +80,16 @@ namespace LeaveManagementWeb.Repositories
             int daysRequested = (int)(model.DateOfExpiry.Value - model.StartDate.Value).TotalDays;
 
             if (daysRequested > leaveAllocation.NumberOfDays)
-                return false;
-            
+                return false;            
 
             var leaveRequest = _mapper.Map<LeaveRequest>(model);
             leaveRequest.DateRequested = DateTime.Now;
             leaveRequest.RequestingEmployeeId = user.Id;
 
             await AddAsync(leaveRequest);
+
+            await _emailSender.SendEmailAsync(user.Email, "Your Leave Request has sent successfully", $"Your leave request " +
+                $"{leaveRequest.LeaveType.Name} from {leaveRequest.StartDate} to {leaveRequest.DateOfExpiry} has just sent for moderation");
 
             return true;
         }
