@@ -1,11 +1,10 @@
 ﻿using AutoMapper;
-using LeaveManagementWeb.Constant;
-using LeaveManagementWeb.Contracts;
-using LeaveManagementWeb.Data;
-using LeaveManagementWeb.Models;
+using LeaveManagement.App.Contracts;
+using LeaveManagement.Data;
+using LeaveManagement.Common.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-
+using LeaveManagement.Common.Constants;
 namespace LeaveManagementWeb.Controllers
 {
     public class EmployeesController : Controller
